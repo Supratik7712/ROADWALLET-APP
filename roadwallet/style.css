@@ -1,0 +1,246 @@
+/* Clean, minimal glassy UI — mobile-first
+   Updated: hides noisy date/year native controls and improves select contrast */
+:root{
+  --bg:#0b1220; --panel:rgba(255,255,255,0.03); --border:rgba(255,255,255,0.06);
+  --accent1:#60a5fa; --accent2:#7ef2c6; --text:#e6eef8; --muted:#a8b3c7;
+  --radius:12px;
+  --gap:12px;
+}
+
+/* base */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;color:var(--text);background:
+  linear-gradient(180deg,#071026 0%, #08172b 100%);-webkit-font-smoothing:antialiased}
+.container{max-width:1100px;margin:18px auto;padding:12px}
+
+/* header */
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.brand h1{margin:0;font-size:1.1rem}
+.subtitle{font-size:0.8rem;color:var(--muted)}
+.user-block{display:flex;align-items:center;gap:10px}
+.avatar-wrap{width:48px;height:48px;position:relative}
+.avatar{width:48px;height:48px;border-radius:10px;object-fit:cover;display:none;border:1px solid var(--border)}
+.avatar-initials{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:10px;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#032; font-weight:700}
+.user-meta{min-width:140px}
+.name{font-weight:600}
+.email{font-size:0.82rem;color:var(--muted)}
+.auth-buttons{display:flex;gap:6px;align-items:center}
+
+/* layout */
+.main{display:grid;grid-template-columns:1fr;gap:14px}
+.sidebar, .profile{order:2}
+.content{order:1}
+
+/* card */
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:14px;backdrop-filter:blur(6px);box-shadow:0 6px 20px rgba(2,6,23,0.4)}
+.card.small{padding:10px}
+.card.compact{padding:10px}
+
+/* form */
+.form{display:flex;flex-direction:column;gap:10px}
+.input, .select{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;width:100%;font-size:0.95rem}
+.select.small{max-width:110px}
+.row{display:flex;gap:10px;align-items:center}
+.row.actions{justify-content:flex-start}
+.btn{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#022;border:none;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:600}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text)}
+.full{width:100%}
+.mt{margin-top:8px}
+
+/* list */
+.list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.item{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border:1px solid rgba(255,255,255,0.02)}
+.item-left{max-width:70%}
+.item .muted{font-size:0.88rem}
+
+/* typography */
+.h2{margin:0 0 6px 0;font-size:1rem}
+.label{font-size:0.85rem;color:var(--muted);margin-bottom:6px}
+.big{font-size:1.4rem;font-weight:700}
+
+/* responsive: two-column on wider screens */
+@media(min-width:880px){
+  .main{grid-template-columns:240px 1fr 240px;align-items:start}
+  .sidebar{order:1}
+  .content{order:2}
+  .profile{order:3}
+}
+
+/* small screens tweak */
+@media(max-width:420px){
+  .avatar, .avatar-initials{width:42px;height:42px}
+  .user-meta{min-width:110px}
+  .btn{font-size:0.95rem}
+}
+
+/* -------------------------
+   DATE INPUT + SELECT STYLING
+   ------------------------- */
+
+/* Make select match dark panel and use custom arrow */
+.select {
+  -webkit-appearance: none; /* remove native arrow on WebKit */
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  color: var(--text);
+  padding-right: 36px; /* leave space for arrow */
+  background-image:
+    linear-gradient(transparent, transparent),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath fill='%23E6EEF8' fill-opacity='0.95' d='M1 1l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat;
+  background-position: right 10px center, calc(100% - 10px) center;
+  background-size: 16px, 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.04);
+  outline: none;
+}
+
+/* For small selects keep same style */
+.select.small { padding-right: 28px; }
+
+/* On focus show clearer outline */
+.input:focus, .select:focus {
+  box-shadow: 0 0 0 3px rgba(96,165,250,0.12);
+  border-color: rgba(96,165,250,0.3);
+}
+
+/* Style native drop-down list (best-effort across browsers) */
+select:focus::-ms-value { color: var(--text); }
+
+/* Date input: keep dark look + hide noisy native calendar/year buttons
+   but allow picker to open when user clicks the input */
+input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  padding-right: 40px;
+  color: var(--text);
+  background-color: transparent;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Hide calendar icon on WebKit while retaining functionality */
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+/* Add a subtle calendar icon (SVG) on the right of date inputs */
+input[type="date"] {
+  background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23E6EEF8' fill-opacity='0.85' d='M7 11h5v5H7z'/%3E%3Cpath fill='%23E6EEF8' fill-opacity='0.85' d='M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H5V9h14v9z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 20px;
+}
+
+/* On some browsers the calendar still shows; above keeps it subtle */
+
+/* Improve contrast for option list on some browsers (best-effort) */
+select option {
+  background: #0b1220;
+  color: var(--text);
+}
+
+/* Remove native number input arrows on mobile/desktop for cleanliness */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+
+/* Focus-visible friendly for keyboard users */
+:focus-visible { outline: 3px solid rgba(96,165,250,0.12); outline-offset: 2px; }
+
+/* Small helpers for links inside items */
+.item a { color: var(--accent1); text-decoration: none; }
+.item a:hover { text-decoration: underline; }
+/* ---- APP TITLE ENHANCED STYLE ---- */
+.app-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #7ef2c6 0%, #60a5fa 50%, #b388ff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 6px rgba(96,165,250,0.35));
+  padding-bottom: 2px;
+}
+
+/* Subtitle slightly cleaner */
+.subtitle {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: -4px;
+}
+
+/* ---- FOOTER RIGHTS RESERVED ---- */
+.footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+  opacity: 0.85;
+}
+/* Filter layout */
+.filter-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.filter-text {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-left: 2px;
+}
+
+/* Clean date field */
+.clean-date {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  padding-right: 36px;
+  background-color: transparent;
+  color: var(--text);
+}
+
+/* hide native icons */
+.clean-date::-webkit-inner-spin-button,
+.clean-date::-webkit-clear-button,
+.clean-date::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+/* custom calendar icon */
+.clean-date {
+  background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23E6EEF8' d='M19 4h-1V2h-2v2H8V2H6v2H5C3.9 4 3 4.9 3 6v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 18px;
+}
+
+/* Prevent overflow on small screens */
+@media (max-width: 450px) {
+  .filter-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+

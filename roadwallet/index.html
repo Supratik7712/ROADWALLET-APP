@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0b74de">
+
+<!-- iOS support (optional) -->
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RoadWallet — Clean UI</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0b74de" />
+</head>
+
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <h1 class="app-title">RoadWallet</h1>
+        <div class="subtitle">Travel Expense Tracker</div>
+      </div>
+
+
+      <div class="user-block">
+        <div class="avatar-wrap">
+          <img id="userAvatar" class="avatar" alt="" />
+          <div id="userInitials" class="avatar-initials"></div>
+        </div>
+        <div class="user-meta">
+          <div id="userName" class="name muted">Signing in...</div>
+          <div id="userEmail" class="email muted small"></div>
+        </div>
+        <div class="auth-buttons">
+          <button id="googleSignInBtn" class="btn ghost">Sign in</button>
+          <button id="signOutBtn" class="btn ghost" style="display:none">Sign out</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <aside class="sidebar">
+        <section class="card">
+          <label class="label">Trip</label>
+          <select id="tripSelect" class="select"></select>
+          <div class="row">
+            <input id="newTripName" placeholder="New trip name" class="input" />
+            <button id="createTripBtn" class="btn">Create</button>
+          </div>
+        </section>
+
+        <section class="card small">
+          <label class="label">Filter by date</label>
+
+          <div class="filter-row">
+            <div class="filter-group">
+              <span class="filter-text">From</span>
+              <input id="fromDate" type="date" class="input clean-date" />
+            </div>
+
+            <div class="filter-group">
+              <span class="filter-text">To</span>
+              <input id="toDate" type="date" class="input clean-date" />
+            </div>
+          </div>
+
+          <div class="row mt">
+            <button id="applyFilters" class="btn full">Apply</button>
+            <button id="clearFilters" class="btn ghost full">Clear</button>
+          </div>
+
+          <div class="row mt">
+            <button id="exportCSV" class="btn full">Export CSV</button>
+          </div>
+        </section>
+
+
+        <section class="card compact">
+          <div class="muted small">Total</div>
+          <div id="total" class="big">0.00</div>
+          <div id="tripLabel" class="muted small mt"></div>
+        </section>
+      </aside>
+
+      <section class="content">
+        <section class="card">
+          <h2 class="h2">Add / Edit Expense</h2>
+          <form id="expenseForm" class="form">
+            <input type="hidden" id="editingId" value="">
+            <input id="note" placeholder="Note (e.g., Lunch at cafe)" class="input" required />
+            <div class="row">
+              <input id="amount" type="number" placeholder="Amount" class="input" step="0.01" required />
+              <select id="currency" class="select small">
+                <option>USD</option>
+                <option>INR</option>
+                <option>EUR</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <select id="category" class="select">
+                <option>Food</option>
+                <option>Transport</option>
+                <option>Accommodation</option>
+                <option>Other</option>
+              </select>
+              <input id="date" type="date" class="input" required />
+            </div>
+
+            <div class="row">
+              <input id="receiptFile" type="file" accept="image/*" class="input" />
+            </div>
+
+            <div class="row actions">
+              <button id="addBtn" class="btn">Save</button>
+              <button id="cancelEditBtn" type="button" class="btn ghost" style="display:none">Cancel</button>
+            </div>
+
+            <div id="formMsg" class="muted small mt"></div>
+          </form>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Expenses</h2>
+          <ul id="expenses" class="list"></ul>
+        </section>
+      </section>
+
+      <aside class="profile">
+        <section class="card">
+          <label class="label">Profile</label>
+          <input id="displayNameInput" placeholder="Display name" class="input" />
+          <button id="saveNameBtn" class="btn mt full">Save name</button>
+          <div class="muted small mt">Name is stored on your account and shown in header.</div>
+        </section>
+      </aside>
+    </main>
+    <footer class="footer muted small">
+      All rights reserved. © Supratik Saha 2025
+    </footer>
+
+
+    <script type="module" src="app.js" defer>
+      if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('SW registered:', reg.scope))
+      .catch(err => console.warn('SW registration failed:', err));
+  });
+}
+
+    </script>
+</body>
+
+</html>
