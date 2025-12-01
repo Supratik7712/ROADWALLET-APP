@@ -4,7 +4,7 @@ const OFFLINE_URL = '/?source=pwa';
 const ASSETS_TO_CACHE = [
   '/', // index
   '/index.html',
-  '/styles.css',
+  '/style.css',
   '/app.js',
   '/manifest.json',
   '/icons/icon-192.png',
